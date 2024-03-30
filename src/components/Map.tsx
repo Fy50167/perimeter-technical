@@ -22,39 +22,46 @@ export default function Map() {
     useEffect(() => {
         // Fetch user's current position using browser's geolocation API
         navigator.geolocation.getCurrentPosition((position) => {
-            const { latitude, longitude } = position.coords;
+            const { longitude, latitude } = position.coords;
             setUserPosition([longitude, latitude]); // Update state with user's coordinates
         });
     }, []);
 
     return (
         <>
-            <div
-                className='w-4/5 h-[45rem] p-4 bg-slate-200 rounded-md'
-                onClick={() => position()}
-            >
-                <div className='h-full w-full border-2 border-black border-solid rounded-md overflow-hidden'>
-                    <Map
-                        style='mapbox://styles/mapbox/basic-v9'
-                        containerStyle={{
-                            height: '100%',
-                            width: '100%',
-                        }}
-                    >
-                        <Layer
-                            type='symbol'
-                            id='marker'
-                            layout={{ 'icon-image': 'marker-15' }}
+            {userPosition ? (
+                <div
+                    className='w-4/5 h-[45rem] p-4 bg-slate-200 rounded-md'
+                    onClick={() => position()}
+                >
+                    <div className='h-full w-full border-2 border-black border-solid rounded-md overflow-hidden'>
+                        <Map
+                            style='mapbox://styles/mapbox/basic-v9'
+                            containerStyle={{
+                                height: '100%',
+                                width: '100%',
+                            }}
+                            center={userPosition}
                         >
-                            <Feature
-                                coordinates={[
-                                    -0.481747846041145, 51.3233379650232,
-                                ]}
-                            />
-                        </Layer>
-                    </Map>
+                            <Layer
+                                type='symbol'
+                                id='marker'
+                                layout={{ 'icon-image': 'marker-15' }}
+                            >
+                                <Feature
+                                    coordinates={[
+                                        -0.481747846041145, 51.3233379650232,
+                                    ]}
+                                />
+                            </Layer>
+                        </Map>
+                    </div>
                 </div>
-            </div>
+            ) : (
+                <p className='mt-5 text-heading2-semibold'>
+                    Obtaining current location...
+                </p>
+            )}
         </>
     );
 }
