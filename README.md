@@ -16,5 +16,5 @@ npm run dev
 
 ## Contact
 
-Contact me via email: fy50167@gmail.com
+Contact me via email: fy50167@gmail.com  
 Or through my website at: francisyang.com
