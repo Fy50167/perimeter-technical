@@ -2,8 +2,12 @@
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useState, useEffect, useRef } from 'react';
-import ReactMapboxGl, { Layer, Feature } from 'react-mapbox-gl';
 import mapboxgl from 'mapbox-gl';
+
+interface MarkerRef {
+    getLngLat: () => { lng: number; lat: number };
+    on: (event: string, callback: () => void) => void;
+}
 
 export default function Map() {
     // Using type any here since the standard <HTMLDivElement> didn't work; map-gl may have unique types?
@@ -14,8 +18,7 @@ export default function Map() {
     const [lng, setLng] = useState<number | null>(null);
     const [lat, setLat] = useState<number | null>(null);
     const [zoom, setZoom] = useState<number>(12);
-
-    const [markers, setMarkers] = useState<any[]>([]);
+    const [markers, setMarkers] = useState<[] | mapboxgl.Marker[]>([]);
     const [polygon, setPolygon] = useState<any>(null);
 
     // Function to generate a polygon in-between markers assuming that we have at least 3
@@ -25,16 +28,14 @@ export default function Map() {
             const coordinates = markers.map((marker) =>
                 marker.getLngLat().toArray()
             );
-            coordinates.push(coordinates[0]); // Close the polygon
-            if (polygon) {
-                polygon.remove();
+
+            if (map.current.getSource('polygon')) {
+                // Remove layer associated with the source
+                map.current.removeLayer('polygon');
+                // Source exists, remove it
+                map.current.removeSource('polygon');
             }
-            setPolygon(
-                new mapboxgl.Popup()
-                    .setLngLat(coordinates[0])
-                    .setHTML('<h3>Hello world!</h3>')
-                    .addTo(map.current)
-            );
+
             map.current.addLayer({
                 id: 'polygon',
                 type: 'fill',
@@ -61,6 +62,7 @@ export default function Map() {
     const handleMapClick = (evt: any) => {
         const newMarker = new mapboxgl.Marker({ draggable: true })
             .setLngLat([evt.lngLat.lng, evt.lngLat.lat])
+
             .addTo(map.current);
         setMarkers((prevMarkers: mapboxgl.Marker[]) => [
             ...prevMarkers,
