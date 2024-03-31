@@ -54,8 +54,22 @@ export default function Map() {
         }
     };
 
+    const clearMarkers = () => {
+        setMarkers([]);
+        updatePolygon();
+    };
+
+    const undoMarkers = () => {
+        setMarkers((prevMarkers) => {
+            const newMarkers = [...prevMarkers];
+            newMarkers.pop();
+            return newMarkers;
+        });
+        updatePolygon();
+    };
+
     // Function to handle map click
-    const handleMapClick = (evt: any) => {
+    const handleMapClick = (evt: mapboxgl.MapMouseEvent) => {
         const markerElement = document.createElement('div');
         createRoot(markerElement).render(<Marker />);
         const newMarker = new mapboxgl.Marker({

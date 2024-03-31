@@ -9,6 +9,10 @@
     color: white;
 }
 
+.mobile-line-break {
+    display: none;
+}
+
 @media (max-width: 768px) {
     .divider {
         display: none;
