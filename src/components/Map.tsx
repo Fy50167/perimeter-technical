@@ -19,7 +19,6 @@ export default function Map() {
     const [lat, setLat] = useState<number | null>(null);
     const [zoom, setZoom] = useState<number>(12);
     const [markers, setMarkers] = useState<[] | mapboxgl.Marker[]>([]);
-    const [polygon, setPolygon] = useState<any>(null);
 
     // Function to generate a polygon in-between markers assuming that we have at least 3
     const updatePolygon = () => {
@@ -29,10 +28,9 @@ export default function Map() {
                 marker.getLngLat().toArray()
             );
 
+            // We have to delete the current polygon to generate new one to avoid layers with duplicate ids
             if (map.current.getSource('polygon')) {
-                // Remove layer associated with the source
                 map.current.removeLayer('polygon');
-                // Source exists, remove it
                 map.current.removeSource('polygon');
             }
 
@@ -101,12 +99,29 @@ export default function Map() {
                 setLat(map.current.getCenter().lat.toFixed(4));
                 setZoom(map.current.getZoom().toFixed(2));
             });
-            console.log(markers);
         }
     }, [lng, lat]);
 
     useEffect(() => {
+        const handleMarkerDrag = () => {
+            updatePolygon();
+        };
+
+        // Handle polygon updates whenever any marker is dragged
+        markers.forEach((marker) => {
+            marker.on('dragend', handleMarkerDrag);
+        });
+
+        // Handle polygon updates whenever new marker is added
         updatePolygon();
+
+        return () => {
+            if (map.current) {
+                markers.forEach((marker) => {
+                    marker.off('dragend', handleMarkerDrag);
+                });
+            }
+        };
     }, [markers]);
 
     return (
