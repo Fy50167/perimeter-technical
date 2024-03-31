@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 
 export default function Map() {
+    // Using type any here since the standard <HTMLDivElement> didn't work; map-gl may have unique types?
     const mapContainer = useRef<any>(null);
     const map = useRef<any>(null);
 
@@ -38,13 +39,25 @@ export default function Map() {
                 zoom: zoom,
             });
         }
+
+        if (map.current) {
+            map.current.on('move', () => {
+                setLng(map.current.getCenter().lng.toFixed(4));
+                setLat(map.current.getCenter().lat.toFixed(4));
+                setZoom(map.current.getZoom().toFixed(2));
+            });
+            console.log(lng, lat);
+        }
     }, [lng, lat]);
 
     return (
         <>
             {lng && lat ? (
                 <div className='w-4/5 h-[45rem] p-4 bg-slate-200 rounded-md'>
-                    <div className='h-full w-full border-2 border-black border-solid rounded-md overflow-hidden'>
+                    <div className='h-full w-full border-2 border-black border-solid rounded-md overflow-hidden z-0 relative'>
+                        <div className='absolute z-10 bg-blue-950 p-2 rounded-md top-2 left-2'>
+                            Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
+                        </div>
                         <div ref={mapContainer} className='w-full h-full'></div>
                     </div>
                 </div>
