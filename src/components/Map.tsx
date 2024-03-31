@@ -15,21 +15,18 @@ export default function Map() {
     const [lat, setLat] = useState<number | null>(null);
     const [zoom, setZoom] = useState<number>(12);
 
-    const [points, setPoints] = useState<any>([]);
+    const [markers, setMarkers] = useState<any[]>([]);
 
     // Function to handle map click
     const handleMapClick = (evt: any) => {
-        const newMarker = new mapboxgl.Marker()
+        const newMarker = new mapboxgl.Marker({ draggable: true })
             .setLngLat([evt.lngLat.lng, evt.lngLat.lat])
             .addTo(map.current);
+        setMarkers((prevMarkers) => [...prevMarkers, newMarker]);
     };
 
     mapboxgl.accessToken =
         'pk.eyJ1IjoiZnJhbmNpcy15YW5nIiwiYSI6ImNsdWJ4d3h5MzExNTMya2s0a2x0M3MybzAifQ.pkLkcbf73zZS0gEUzHz47A';
-
-    const position = () => {
-        console.log([lng, lat]);
-    };
 
     useEffect(() => {
         // Fetch user's current position using browser's geolocation API and set default longitutde and latitude
