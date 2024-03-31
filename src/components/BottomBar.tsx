@@ -7,18 +7,18 @@ import Button from './Button';
 interface Props {
     clearMarkers: () => void;
     undoMarkers: () => void;
-    markerName: string;
-    setMarkerName: React.Dispatch<React.SetStateAction<string>>;
+    polygonName: string;
+    setPolygonName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const BottomBar = ({
     clearMarkers,
     undoMarkers,
-    setMarkerName,
-    markerName,
+    setPolygonName,
+    polygonName,
 }: Props) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setMarkerName(e.currentTarget.value);
+        setPolygonName(e.currentTarget.value);
     };
     return (
         <div className='w-full flex-1 flex justify-evenly items-center'>
@@ -35,7 +35,7 @@ const BottomBar = ({
                     type='text'
                     name='name'
                     id='name'
-                    value={markerName}
+                    value={polygonName}
                     placeholder='Polygon name'
                     className='w-3/5 p-2 text-black'
                     onChange={handleChange}

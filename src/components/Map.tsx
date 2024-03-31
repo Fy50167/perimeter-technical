@@ -28,7 +28,7 @@ export default function Map() {
     const [zoom, setZoom] = useState<number>(12);
     const [markers, setMarkers] = useState<[] | mapboxgl.Marker[]>([]);
     const [savedPolygons, setSavedPolygons] = useState<[] | Polygon[]>([]);
-    const [markerName, setMarkerName] = useState<string>('');
+    const [polygonName, setPolygonName] = useState<string>('');
 
     // Function to generate a polygon in-between markers assuming that we have at least 3
     const updatePolygon = () => {
@@ -84,8 +84,18 @@ export default function Map() {
     };
 
     const saveMarkers = (currentMarkers: [] | mapboxgl.Marker[]) => {
-        // Clear markers after they are saved
-        clearMarkers();
+        if (polygonName !== '') {
+            setSavedPolygons([
+                ...savedPolygons,
+                {
+                    name: polygonName,
+                    coordinates: markers,
+                },
+            ]);
+            // Clear markers after they are saved
+            clearMarkers();
+        } else {
+        }
     };
 
     // Function to handle map click, generating new markers
@@ -176,8 +186,8 @@ export default function Map() {
                         <BottomBar
                             clearMarkers={clearMarkers}
                             undoMarkers={undoMarkers}
-                            setMarkerName={setMarkerName}
-                            markerName={markerName}
+                            setPolygonName={setPolygonName}
+                            polygonName={polygonName}
                         />
                     </div>
                 </section>
