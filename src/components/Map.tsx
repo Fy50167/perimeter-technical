@@ -24,16 +24,16 @@ export default function Map() {
 
     // Function to generate a polygon in-between markers assuming that we have at least 3
     const updatePolygon = () => {
+        if (map.current?.getSource('polygon')) {
+            map.current.removeLayer('polygon');
+            map.current.removeSource('polygon');
+        }
         if (markers.length >= 3) {
             const coordinates = markers.map((marker) =>
                 marker.getLngLat().toArray()
             );
 
-            // We have to delete the current polygon to generate new one to avoid layers with duplicate ids
-            if (map.current.getSource('polygon')) {
-                map.current.removeLayer('polygon');
-                map.current.removeSource('polygon');
-            }
+            // We have to delete the current polygon, either whenever we generate a new one or clear markers
 
             map.current.addLayer({
                 id: 'polygon',
@@ -58,17 +58,20 @@ export default function Map() {
     };
 
     const clearMarkers = () => {
+        markers.forEach((marker) => marker.remove());
         setMarkers([]);
-        updatePolygon();
     };
 
     const undoMarkers = () => {
+        const lastMarker = markers[markers.length - 1];
+        if (lastMarker) {
+            lastMarker.remove();
+        }
         setMarkers((prevMarkers) => {
             const newMarkers = [...prevMarkers];
             newMarkers.pop();
             return newMarkers;
         });
-        updatePolygon();
     };
 
     // Function to handle map click
@@ -155,7 +158,10 @@ export default function Map() {
                                 className='w-full h-full'
                             ></div>
                         </div>
-                        <BottomBar />
+                        <BottomBar
+                            clearMarkers={clearMarkers}
+                            undoMarkers={undoMarkers}
+                        />
                     </div>
                 </div>
             ) : (

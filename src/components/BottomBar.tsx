@@ -4,7 +4,12 @@ import { useState } from 'react';
 
 import Button from './Button';
 
-const BottomBar = () => {
+interface Props {
+    clearMarkers: () => void;
+    undoMarkers: () => void;
+}
+
+const BottomBar = ({ clearMarkers, undoMarkers }: Props) => {
     const [polygonName, setPolygonName] = useState<string>('');
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -13,8 +18,8 @@ const BottomBar = () => {
     return (
         <div className='w-full flex-1 flex justify-evenly items-center'>
             <div className='flex-1 flex items-center justify-evenly border-r-2 border-black border-solid'>
-                <Button value={'undo'} />
-                <Button value={'clear'} />
+                <Button value={'undo'} onClick={undoMarkers} />
+                <Button value={'clear'} onClick={clearMarkers} />
                 <Button value={'save'} />
             </div>
             <div className='flex-1 flex items-center justify-center'>
@@ -24,6 +29,7 @@ const BottomBar = () => {
                 <input
                     type='text'
                     name='name'
+                    id='name'
                     value={polygonName}
                     placeholder='Polygon name'
                     className='w-3/5 p-2 text-black'
