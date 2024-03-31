@@ -3,11 +3,8 @@
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useState, useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
-
-interface MarkerRef {
-    getLngLat: () => { lng: number; lat: number };
-    on: (event: string, callback: () => void) => void;
-}
+import Marker from './Marker';
+import { createRoot } from 'react-dom/client';
 
 export default function Map() {
     // Using type any here since the standard <HTMLDivElement> didn't work; map-gl may have unique types?
@@ -22,7 +19,6 @@ export default function Map() {
 
     // Function to generate a polygon in-between markers assuming that we have at least 3
     const updatePolygon = () => {
-        console.log(markers.length);
         if (markers.length >= 3) {
             const coordinates = markers.map((marker) =>
                 marker.getLngLat().toArray()
@@ -49,7 +45,7 @@ export default function Map() {
                 },
                 layout: {},
                 paint: {
-                    'fill-color': '#088',
+                    'fill-color': '#6e1835',
                     'fill-opacity': 0.8,
                 },
             });
@@ -58,7 +54,13 @@ export default function Map() {
 
     // Function to handle map click
     const handleMapClick = (evt: any) => {
-        const newMarker = new mapboxgl.Marker({ draggable: true })
+        const markerElement = document.createElement('div');
+        createRoot(markerElement).render(<Marker />);
+        const newMarker = new mapboxgl.Marker({
+            draggable: true,
+            anchor: 'bottom',
+            element: markerElement,
+        })
             .setLngLat([evt.lngLat.lng, evt.lngLat.lat])
 
             .addTo(map.current);
@@ -128,11 +130,18 @@ export default function Map() {
         <>
             {lng && lat ? (
                 <div className='w-4/5 h-[45rem] p-4 bg-slate-200 rounded-md'>
-                    <div className='h-full w-full border-2 border-black border-solid rounded-md overflow-hidden z-0 relative'>
-                        <div className='absolute z-10 bg-blue-950 p-2 rounded-md top-2 left-2 opacity-90'>
-                            Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
+                    <div className='h-full w-full border-2 border-black border-solid rounded-md overflow-hidden z-0 flex flex-col items-center justify-center'>
+                        <div className='w-full h-[92%] border-black border-b-2 border-solid relative'>
+                            <div className='absolute z-10 bg-blue-950 p-2 rounded-md top-2 left-2 opacity-90'>
+                                Longitude: {lng} | Latitude: {lat} | Zoom:{' '}
+                                {zoom}
+                            </div>
+                            <div
+                                ref={mapContainer}
+                                className='w-full h-full'
+                            ></div>
                         </div>
-                        <div ref={mapContainer} className='w-full h-full'></div>
+                        <div className='w-full flex-1'>Hello</div>
                     </div>
                 </div>
             ) : (
