@@ -9,6 +9,11 @@ import Location from './Location';
 import BottomBar from './BottomBar';
 import Sidebar from './Sidebar';
 
+interface Polygon {
+    name: string;
+    coordinates: Array<mapboxgl.Marker>;
+}
+
 export default function Map() {
     mapboxgl.accessToken =
         'pk.eyJ1IjoiZnJhbmNpcy15YW5nIiwiYSI6ImNsdWJ4d3h5MzExNTMya2s0a2x0M3MybzAifQ.pkLkcbf73zZS0gEUzHz47A';
@@ -22,6 +27,8 @@ export default function Map() {
     const [lat, setLat] = useState<number | null>(null);
     const [zoom, setZoom] = useState<number>(12);
     const [markers, setMarkers] = useState<[] | mapboxgl.Marker[]>([]);
+    const [savedPolygons, setSavedPolygons] = useState<[] | Polygon[]>([]);
+    const [markerName, setMarkerName] = useState<string>('');
 
     // Function to generate a polygon in-between markers assuming that we have at least 3
     const updatePolygon = () => {
@@ -58,6 +65,7 @@ export default function Map() {
         }
     };
 
+    // Functions to clear and undo markers
     const clearMarkers = () => {
         markers.forEach((marker) => marker.remove());
         setMarkers([]);
@@ -75,7 +83,12 @@ export default function Map() {
         });
     };
 
-    // Function to handle map click
+    const saveMarkers = (currentMarkers: [] | mapboxgl.Marker[]) => {
+        // Clear markers after they are saved
+        clearMarkers();
+    };
+
+    // Function to handle map click, generating new markers
     const handleMapClick = (evt: mapboxgl.MapMouseEvent) => {
         const markerElement = document.createElement('div');
         createRoot(markerElement).render(<Marker />);
@@ -94,8 +107,8 @@ export default function Map() {
         ]);
     };
 
+    // On initial load, fetch user's current position using browser's geolocation API and set default longitutde and latitude
     useEffect(() => {
-        // Fetch user's current position using browser's geolocation API and set default longitutde and latitude
         navigator.geolocation.getCurrentPosition((position) => {
             const { longitude, latitude } = position.coords;
             setLng(longitude);
@@ -150,8 +163,8 @@ export default function Map() {
     return (
         <>
             {lng && lat ? (
-                <div className='w-4/5 h-[45rem] p-4 bg-slate-200 rounded-md flex justify-evenly gap-4'>
-                    <Sidebar />
+                <section className='w-4/5 h-[45rem] p-4 bg-slate-200 rounded-md flex justify-evenly gap-4'>
+                    <Sidebar savedPolygons={savedPolygons} />
                     <div className='h-full w-4/5 border-2 border-black border-solid rounded-md overflow-hidden z-0 flex flex-col items-center justify-center'>
                         <div className='w-full h-[92%] border-black border-b-2 border-solid relative'>
                             <Location lng={lng} lat={lat} zoom={zoom} />
@@ -163,9 +176,11 @@ export default function Map() {
                         <BottomBar
                             clearMarkers={clearMarkers}
                             undoMarkers={undoMarkers}
+                            setMarkerName={setMarkerName}
+                            markerName={markerName}
                         />
                     </div>
-                </div>
+                </section>
             ) : (
                 <p className='mt-5 text-heading2-semibold'>
                     Obtaining current location...
