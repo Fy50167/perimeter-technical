@@ -7,7 +7,7 @@ const Button = ({ value }: Props) => {
     const uppercase = value.toUpperCase();
 
     return (
-        <button className='text-gold-2 text-body-bold bg-maroon-2 p2 w-1/5 border-2 border-black border-solid rounded-md'>
+        <button className='text-gold-2 text-body-bold bg-maroon-2 p2 w-1/5 border-2 border-black border-solid rounded-md tracking-widest'>
             {uppercase}
         </button>
     );

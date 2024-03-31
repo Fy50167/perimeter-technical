@@ -9,6 +9,9 @@ import Location from './Location';
 import BottomBar from './BottomBar';
 
 export default function Map() {
+    mapboxgl.accessToken =
+        'pk.eyJ1IjoiZnJhbmNpcy15YW5nIiwiYSI6ImNsdWJ4d3h5MzExNTMya2s0a2x0M3MybzAifQ.pkLkcbf73zZS0gEUzHz47A';
+
     // Using type any here since the standard <HTMLDivElement> didn't work; map-gl may have unique types?
     const mapContainer = useRef<any>(null);
     const map = useRef<any>(null);
@@ -80,14 +83,12 @@ export default function Map() {
             .setLngLat([evt.lngLat.lng, evt.lngLat.lat])
 
             .addTo(map.current);
+
         setMarkers((prevMarkers: mapboxgl.Marker[]) => [
             ...prevMarkers,
             newMarker,
         ]);
     };
-
-    mapboxgl.accessToken =
-        'pk.eyJ1IjoiZnJhbmNpcy15YW5nIiwiYSI6ImNsdWJ4d3h5MzExNTMya2s0a2x0M3MybzAifQ.pkLkcbf73zZS0gEUzHz47A';
 
     useEffect(() => {
         // Fetch user's current position using browser's geolocation API and set default longitutde and latitude
