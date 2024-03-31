@@ -132,9 +132,14 @@ export default function Map() {
                 <div className='w-4/5 h-[45rem] p-4 bg-slate-200 rounded-md'>
                     <div className='h-full w-full border-2 border-black border-solid rounded-md overflow-hidden z-0 flex flex-col items-center justify-center'>
                         <div className='w-full h-[92%] border-black border-b-2 border-solid relative'>
-                            <div className='absolute z-10 bg-blue-950 p-2 rounded-md top-2 left-2 opacity-90'>
-                                Longitude: {lng} | Latitude: {lat} | Zoom:{' '}
-                                {zoom}
+                            <div className='absolute z-10 bg-blue-950 p-2 rounded-md top-2 left-2 opacity-90 text-small-regular md:text-body-normal'>
+                                Longitude: {lng}
+                                <span className='divider'>|</span>
+                                <br className='mobile-line-break' />
+                                Latitude: {lat}
+                                <span className='divider'>|</span>
+                                <br className='mobile-line-break' />
+                                Zoom: {zoom}
                             </div>
                             <div
                                 ref={mapContainer}

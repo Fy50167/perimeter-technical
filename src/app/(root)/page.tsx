@@ -3,9 +3,9 @@ import Map from '../../components/Map';
 
 export default function Home() {
     return (
-        <main className='min-h-screen min-w-screen bg-gradient flex flex-col justify-center items-center gap-4'>
+        <main className='min-h-screen min-w-screen bg-gradient flex flex-col justify-center items-center gap-4 p-4'>
             <div className='flex flex-col justify-center items-center'>
-                <h1 className='text-heading1-bold'>
+                <h1 className='md:text-heading1-bold text-heading3-bold'>
                     Perimeter Technical Exercise
                 </h1>
                 <h3 className='text-base-medium'>By: Francis Yang</h3>

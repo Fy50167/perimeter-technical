@@ -9,9 +9,11 @@
     color: white;
 }
 
-.marker {
-    width: 20px;
-    height: 20px;
-    background-color: red;
-    border-radius: 50%;
+@media (max-width: 768px) {
+    .divider {
+        display: none;
+    }
+    .mobile-line-break {
+        display: block;
+    }
 }
