@@ -83,9 +83,9 @@ const Sidebar = ({
                 <Image
                     alt='menu icon'
                     src='/assets/hamburger.png'
-                    height={20}
-                    width={20}
-                    className='md:hidden absolute right-8'
+                    height={18}
+                    width={18}
+                    className='md:hidden absolute right-8 w-[18px] h-[18px]'
                     onClick={() => handleExpand()}
                 />
             </div>

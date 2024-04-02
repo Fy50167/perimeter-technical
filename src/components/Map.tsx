@@ -83,16 +83,31 @@ export default function Map() {
         });
     };
 
-    // Save current markers to saved polygons before clearing
-    const saveMarkers = () => {
-        setSavedPolygons([
-            ...savedPolygons,
-            {
-                name: polygonName,
+    // Function to replace and save markers to saved polygons
+    const saveMarkers = (name: string) => {
+        const index = savedPolygons.findIndex(
+            (polygon) => polygon.name === name
+        );
+
+        // If index is not found then findIndex returns -1
+        if (index !== -1) {
+            const updatedPolygons = [...savedPolygons];
+            updatedPolygons[index] = {
+                name: name,
                 coordinates: markers,
-            },
-        ]);
-        // Clear markers after they are saved
+            };
+            setSavedPolygons(updatedPolygons);
+        } else {
+            // If the polygon with the given name doesn't exist, add it to savedPolygons
+            setSavedPolygons([
+                ...savedPolygons,
+                {
+                    name: name,
+                    coordinates: markers,
+                },
+            ]);
+        }
+
         clearMarkers();
         setPolygonName('');
     };
@@ -191,9 +206,9 @@ export default function Map() {
                             clearMarkers={clearMarkers}
                             undoMarkers={undoMarkers}
                             saveMarkers={saveMarkers}
+                            markers={markers}
                             setPolygonName={setPolygonName}
                             polygonName={polygonName}
-                            savedPolygons={savedPolygons}
                         />
                     </div>
                 </section>

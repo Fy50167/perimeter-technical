@@ -4,33 +4,28 @@ import Swal from 'sweetalert2';
 
 import Button from './Button';
 
-interface Polygon {
-    name: string;
-    coordinates: Array<mapboxgl.Marker>;
-}
-
 interface Props {
     clearMarkers: () => void;
     undoMarkers: () => void;
-    saveMarkers: () => void;
+    saveMarkers: (e: string) => void;
+    markers: [] | mapboxgl.Marker[];
     polygonName: string;
     setPolygonName: React.Dispatch<React.SetStateAction<string>>;
-    savedPolygons: [] | Polygon[];
 }
 
 const BottomBar = ({
     clearMarkers,
     undoMarkers,
     saveMarkers,
+    markers,
     setPolygonName,
     polygonName,
-    savedPolygons,
 }: Props) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPolygonName(e.currentTarget.value);
     };
 
-    // Conditions to check that we have a name and we get no duplicate names
+    // Conditions to check that we have a name and we have at least 3 points to generate a polygon
     const saveHandler = () => {
         if (!polygonName) {
             Swal.fire({
@@ -39,22 +34,21 @@ const BottomBar = ({
                 icon: 'error',
                 confirmButtonText: 'Confirm',
             });
-        } else if (
-            savedPolygons.some((polygon) => polygon.name === polygonName)
-        ) {
+        } else if (markers.length < 3) {
             Swal.fire({
                 title: 'Save failed.',
-                text: 'You already have a polygon with that name.',
+                text: 'You need at least three points to save a polygon!',
                 icon: 'error',
                 confirmButtonText: 'Confirm',
             });
         } else {
-            saveMarkers();
+            // Our save markers function already checks if the polygon exists to update, otherwise it just adds a new one
+            saveMarkers(polygonName);
         }
     };
 
     return (
-        <div className='w-full flex-1 flex flex-col md:flex-row justify-evenly items-center p-2 m:p-0'>
+        <footer className='w-full flex-1 flex flex-col md:flex-row justify-evenly items-center p-2 m:p-0'>
             <div className='w-full md:w-1/2 flex flex-col md:flex-row items-center justify-evenly gap-2 md:gap-0 md:border-r-2 border-black border-solid mb-2 md:mb-0'>
                 <Button
                     value={'undo'}
@@ -87,7 +81,7 @@ const BottomBar = ({
                     maxLength={30}
                 />
             </div>
-        </div>
+        </footer>
     );
 };
 
