@@ -15,8 +15,7 @@ interface Polygon {
 }
 
 export default function Map() {
-    mapboxgl.accessToken =
-        'pk.eyJ1IjoiZnJhbmNpcy15YW5nIiwiYSI6ImNsdWJ4d3h5MzExNTMya2s0a2x0M3MybzAifQ.pkLkcbf73zZS0gEUzHz47A';
+    mapboxgl.accessToken = process.env.NEXT_PUBLIC_ACCESS_TOKEN;
 
     // Using type any here since the standard <HTMLDivElement> didn't work; map-gl may have unique types?
     const mapContainer = useRef<any>(null);
