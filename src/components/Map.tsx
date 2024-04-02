@@ -134,11 +134,18 @@ export default function Map() {
 
     // On initial load, fetch user's current position using browser's geolocation API and set default longitutde and latitude
     useEffect(() => {
-        navigator.geolocation.getCurrentPosition((position) => {
-            const { longitude, latitude } = position.coords;
-            setLng(longitude);
-            setLat(latitude);
-        });
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const { longitude, latitude } = position.coords;
+                setLng(longitude);
+                setLat(latitude);
+            },
+
+            () => {
+                setLng(-0.1282);
+                setLat(51.5051);
+            }
+        );
     }, []);
 
     useEffect(() => {
@@ -161,7 +168,7 @@ export default function Map() {
                 setZoom(map.current.getZoom().toFixed(2));
             });
         }
-    }, [lng, lat, zoom]);
+    }, [lng, lat, zoom, mapContainer]);
 
     useEffect(() => {
         const handleMarkerDrag = () => {
