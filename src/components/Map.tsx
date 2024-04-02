@@ -83,20 +83,18 @@ export default function Map() {
         });
     };
 
+    // Save current markers to saved polygons before clearing
     const saveMarkers = () => {
-        if (polygonName !== '') {
-            setSavedPolygons([
-                ...savedPolygons,
-                {
-                    name: polygonName,
-                    coordinates: markers,
-                },
-            ]);
-            // Clear markers after they are saved
-            clearMarkers();
-            setPolygonName('');
-        } else {
-        }
+        setSavedPolygons([
+            ...savedPolygons,
+            {
+                name: polygonName,
+                coordinates: markers,
+            },
+        ]);
+        // Clear markers after they are saved
+        clearMarkers();
+        setPolygonName('');
     };
 
     // Function to handle map click, generating new markers
@@ -109,9 +107,7 @@ export default function Map() {
             element: markerElement,
         })
             .setLngLat([evt.lngLat.lng, evt.lngLat.lat])
-
             .addTo(map.current);
-
         setMarkers((prevMarkers: mapboxgl.Marker[]) => [
             ...prevMarkers,
             newMarker,
@@ -176,8 +172,12 @@ export default function Map() {
             {lng && lat ? (
                 <section className='w-4/5 h-[45rem] p-4 bg-slate-200 rounded-md flex justify-evenly gap-4'>
                     <Sidebar
+                        map={map.current}
                         savedPolygons={savedPolygons}
+                        markers={markers}
                         setSavedPolygons={setSavedPolygons}
+                        setMarkers={setMarkers}
+                        setPolygonName={setPolygonName}
                     />
                     <div className='h-full w-4/5 border-2 border-black border-solid rounded-md overflow-hidden z-0 flex flex-col items-center justify-center'>
                         <div className='w-full h-[92%] border-black border-b-2 border-solid relative'>
