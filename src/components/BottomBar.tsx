@@ -1,8 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import Swal from 'sweetalert2';
 
 import Button from './Button';
+
+interface Polygon {
+    name: string;
+    coordinates: Array<mapboxgl.Marker>;
+}
 
 interface Props {
     clearMarkers: () => void;
@@ -10,6 +15,7 @@ interface Props {
     saveMarkers: () => void;
     polygonName: string;
     setPolygonName: React.Dispatch<React.SetStateAction<string>>;
+    savedPolygons: [] | Polygon[];
 }
 
 const BottomBar = ({
@@ -18,10 +24,34 @@ const BottomBar = ({
     saveMarkers,
     setPolygonName,
     polygonName,
+    savedPolygons,
 }: Props) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPolygonName(e.currentTarget.value);
     };
+
+    const saveHandler = () => {
+        if (!polygonName) {
+            Swal.fire({
+                title: 'Save failed.',
+                text: "You're missing a title for your polygon!",
+                icon: 'error',
+                confirmButtonText: 'Confirm',
+            });
+        } else if (
+            savedPolygons.some((polygon) => polygon.name === polygonName)
+        ) {
+            Swal.fire({
+                title: 'Save failed.',
+                text: 'You already have a polygon with that name.',
+                icon: 'error',
+                confirmButtonText: 'Confirm',
+            });
+        } else {
+            saveMarkers();
+        }
+    };
+
     return (
         <div className='w-full flex-1 flex justify-evenly items-center'>
             <div className='flex-1 flex items-center justify-evenly border-r-2 border-black border-solid'>
@@ -37,7 +67,7 @@ const BottomBar = ({
                 />
                 <Button
                     value={'save'}
-                    onClick={saveMarkers}
+                    onClick={saveHandler}
                     className={'w-1/5'}
                 />
             </div>
