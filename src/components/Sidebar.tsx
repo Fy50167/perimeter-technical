@@ -62,9 +62,9 @@ const Sidebar = ({
     };
 
     return (
-        <aside className='h-full flex-1 rounded-md border-2 border-solid border-black flex flex-col min-w-[200px] overflow-auto'>
+        <aside className='h-full hidden flex-1 rounded-md border-2 border-solid border-black flex flex-col min-w-[200px] overflow-auto'>
             <div className='h-[5%] w-full border-b-2 border-black bg-maroon-2'>
-                <h3 className='text-gold-2 h-full w-full text-medium-semibold lg:text-base-semibold flex justify-center items-center'>
+                <h3 className='text-gold-2 h-full w-full text-base-semibold flex justify-center items-center'>
                     SAVED POLYGONS
                 </h3>
             </div>

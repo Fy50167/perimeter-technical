@@ -54,25 +54,25 @@ const BottomBar = ({
     };
 
     return (
-        <div className='w-full flex-1 flex justify-evenly items-center'>
-            <div className='flex-1 flex items-center justify-evenly border-r-2 border-black border-solid'>
+        <div className='w-full flex-1 flex flex-col md:flex-row justify-evenly items-center p-2 m:p-0'>
+            <div className='w-full md:w-1/2 flex flex-col md:flex-row items-center justify-evenly gap-2 md:gap-0 md:border-r-2 border-black border-solid mb-2 md:mb-0'>
                 <Button
                     value={'undo'}
                     onClick={undoMarkers}
-                    className={'w-1/5'}
+                    className={'w-3/5 md:w-1/5'}
                 />
                 <Button
                     value={'clear'}
                     onClick={clearMarkers}
-                    className={'w-1/5'}
+                    className={'w-3/5 md:w-1/5'}
                 />
                 <Button
                     value={'save'}
                     onClick={saveHandler}
-                    className={'w-1/5'}
+                    className={'w-3/5 md:w-1/5'}
                 />
             </div>
-            <div className='flex-1 flex items-center justify-center'>
+            <div className='w-full md:w-1/2 flex items-center justify-center'>
                 <label htmlFor='name' className='text-black mr-4'>
                     Name:{' '}
                 </label>

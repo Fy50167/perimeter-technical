@@ -170,7 +170,7 @@ export default function Map() {
     return (
         <>
             {lng && lat ? (
-                <section className='w-4/5 h-[45rem] p-4 bg-slate-200 rounded-md flex justify-evenly gap-4'>
+                <section className='w-4/5 min-h-[45rem] h-[45rem] p-4 bg-slate-200 rounded-md flex flex-col md:flex-row justify-evenly gap-4'>
                     <Sidebar
                         map={map.current}
                         savedPolygons={savedPolygons}
@@ -179,7 +179,7 @@ export default function Map() {
                         setMarkers={setMarkers}
                         setPolygonName={setPolygonName}
                     />
-                    <div className='h-full w-4/5 border-2 border-black border-solid rounded-md overflow-hidden z-0 flex flex-col items-center justify-center'>
+                    <div className='h-full w-full md:w-4/5 border-2 border-black border-solid rounded-md overflow-hidden z-0 flex flex-col items-center justify-center'>
                         <div className='w-full h-[92%] border-black border-b-2 border-solid relative'>
                             <Location lng={lng} lat={lat} zoom={zoom} />
                             <div
