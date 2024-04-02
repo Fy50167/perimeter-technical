@@ -62,32 +62,34 @@ const Sidebar = ({
     };
 
     return (
-        <aside className='h-full flex-1 rounded-md border-2 border-solid border-black flex flex-col min-w-[200px]'>
+        <aside className='h-full flex-1 rounded-md border-2 border-solid border-black flex flex-col min-w-[200px] overflow-auto'>
             <div className='h-[5%] w-full border-b-2 border-black bg-maroon-2'>
                 <h3 className='text-gold-2 h-full w-full text-medium-semibold lg:text-base-semibold flex justify-center items-center'>
                     SAVED POLYGONS
                 </h3>
             </div>
-            {savedPolygons.map((polygon) => (
-                <div
-                    className='h-[5%] w-full border-b-2 border-black flex justify-center items-center p-1'
-                    key={polygon.name}
-                >
-                    <h3 className='text-black text-base-semibold w-3/4'>
-                        {polygon.name}
-                    </h3>
-                    <div className='flex justify-evenly items-center w-full flex-1 border-l-2 border-black border-solid pl-1'>
-                        <Button
-                            image={'/assets/select.png'}
-                            onClick={() => selectPolygon(polygon.name)}
-                        />
-                        <Button
-                            image={'/assets/trash.png'}
-                            onClick={() => deletePolygon(polygon.name)}
-                        />
+            <div className='flex-1 overflow-auto scroll'>
+                {savedPolygons.map((polygon) => (
+                    <div
+                        className='min-h-[5%] h-auto w-full border-b-2 border-black flex justify-center items-center p-1'
+                        key={polygon.name}
+                    >
+                        <h3 className='text-black h-auto text-small-semibold w-3/4 flex flex-wrap'>
+                            {polygon.name}
+                        </h3>
+                        <div className='flex justify-evenly items-center w-full flex-1 border-l-2 border-black border-solid pl-1'>
+                            <Button
+                                image={'/assets/select.png'}
+                                onClick={() => selectPolygon(polygon.name)}
+                            />
+                            <Button
+                                image={'/assets/trash.png'}
+                                onClick={() => deletePolygon(polygon.name)}
+                            />
+                        </div>
                     </div>
-                </div>
-            ))}
+                ))}
+            </div>
         </aside>
     );
 };
