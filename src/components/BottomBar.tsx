@@ -30,6 +30,7 @@ const BottomBar = ({
         setPolygonName(e.currentTarget.value);
     };
 
+    // Conditions to check that we have a name and we get no duplicate names
     const saveHandler = () => {
         if (!polygonName) {
             Swal.fire({

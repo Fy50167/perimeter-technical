@@ -7,9 +7,17 @@ interface Polygon {
 
 interface Props {
     savedPolygons: Polygon[] | [];
+    setSavedPolygons: React.Dispatch<React.SetStateAction<Polygon[]>>;
 }
 
-const Sidebar = ({ savedPolygons }: Props) => {
+const Sidebar = ({ savedPolygons, setSavedPolygons }: Props) => {
+    // Delete polygons by filtering out the polygons that has the same name
+    const deletePolygon = (name: string) => {
+        setSavedPolygons(
+            savedPolygons.filter((polygon) => polygon.name !== name)
+        );
+    };
+
     return (
         <aside className='h-full flex-1 rounded-md border-2 border-solid border-black flex flex-col min-w-[200px]'>
             <div className='h-[5%] w-full border-b-2 border-black bg-maroon-2'>
@@ -27,7 +35,10 @@ const Sidebar = ({ savedPolygons }: Props) => {
                     </h3>
                     <div className='flex justify-evenly items-center w-full flex-1 border-l-2 border-black border-solid pl-1'>
                         <Button image={'/assets/select.png'} />
-                        <Button image={'/assets/trash.png'} />
+                        <Button
+                            image={'/assets/trash.png'}
+                            onClick={() => deletePolygon(polygon.name)}
+                        />
                     </div>
                 </div>
             ))}
