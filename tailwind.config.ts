@@ -78,7 +78,7 @@ const config: Config = {
                 },
             ],
             'body-normal': [
-                '18px',
+                '17px',
                 {
                     lineHeight: '140%',
                     fontWeight: '400',

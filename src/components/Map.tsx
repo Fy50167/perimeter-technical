@@ -170,7 +170,7 @@ export default function Map() {
     return (
         <>
             {lng && lat ? (
-                <section className='w-4/5 min-h-[45rem] h-[45rem] p-4 bg-slate-200 rounded-md flex flex-col md:flex-row justify-evenly gap-4'>
+                <section className='md:min-w-[48rem] w-[90%] md:w-4/5 min-h-[45rem] h-[45rem] p-4 bg-slate-200 rounded-md flex flex-col md:flex-row justify-evenly gap-4'>
                     <Sidebar
                         map={map.current}
                         savedPolygons={savedPolygons}
@@ -198,7 +198,7 @@ export default function Map() {
                     </div>
                 </section>
             ) : (
-                <p className='mt-5 text-heading2-semibold'>
+                <p className='mt-5 text-heading2-semibold text-center'>
                     Obtaining current location...
                 </p>
             )}

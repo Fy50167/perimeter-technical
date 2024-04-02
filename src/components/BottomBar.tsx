@@ -59,17 +59,17 @@ const BottomBar = ({
                 <Button
                     value={'undo'}
                     onClick={undoMarkers}
-                    className={'w-3/5 md:w-1/5'}
+                    className={'w-3/5 md:w-1/5 md:min-w-[4.7rem]'}
                 />
                 <Button
                     value={'clear'}
                     onClick={clearMarkers}
-                    className={'w-3/5 md:w-1/5'}
+                    className={'w-3/5 md:w-1/5 md:min-w-[4.7rem]'}
                 />
                 <Button
                     value={'save'}
                     onClick={saveHandler}
-                    className={'w-3/5 md:w-1/5'}
+                    className={'w-3/5 md:w-1/5 md:min-w-[4.7rem]'}
                 />
             </div>
             <div className='w-full md:w-1/2 flex items-center justify-center'>
