@@ -66,20 +66,27 @@ const BottomBar = ({
                     className={'w-3/5 md:w-1/5 md:min-w-[4.7rem]'}
                 />
             </div>
+
             <div className='w-full md:w-1/2 flex items-center justify-center'>
-                <label htmlFor='name' className='text-black mr-4'>
+                <label htmlFor='name' className='text-black text-right w-1/4'>
                     Name:{' '}
                 </label>
-                <input
-                    type='text'
-                    name='name'
-                    id='name'
-                    value={polygonName}
-                    placeholder='Polygon name'
-                    className='w-3/5 p-2 text-black'
-                    onChange={handleChange}
-                    maxLength={30}
-                />
+                <div className='w-3/4 p-2 flex flex-col gap-1'>
+                    <p className='text-black text-tiny-medium'>
+                        Note: Using an existing name will overwrite the existing
+                        polygon!
+                    </p>
+                    <input
+                        type='text'
+                        name='name'
+                        id='name'
+                        value={polygonName}
+                        placeholder='Polygon name'
+                        className='text-black p-1 border-[2px] border-black border-solid rounded-md'
+                        onChange={handleChange}
+                        maxLength={30}
+                    />
+                </div>
             </div>
         </footer>
     );
