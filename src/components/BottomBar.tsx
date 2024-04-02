@@ -7,6 +7,7 @@ import Button from './Button';
 interface Props {
     clearMarkers: () => void;
     undoMarkers: () => void;
+    saveMarkers: () => void;
     polygonName: string;
     setPolygonName: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -14,6 +15,7 @@ interface Props {
 const BottomBar = ({
     clearMarkers,
     undoMarkers,
+    saveMarkers,
     setPolygonName,
     polygonName,
 }: Props) => {
@@ -23,9 +25,21 @@ const BottomBar = ({
     return (
         <div className='w-full flex-1 flex justify-evenly items-center'>
             <div className='flex-1 flex items-center justify-evenly border-r-2 border-black border-solid'>
-                <Button value={'undo'} onClick={undoMarkers} />
-                <Button value={'clear'} onClick={clearMarkers} />
-                <Button value={'save'} />
+                <Button
+                    value={'undo'}
+                    onClick={undoMarkers}
+                    className={'w-1/5'}
+                />
+                <Button
+                    value={'clear'}
+                    onClick={clearMarkers}
+                    className={'w-1/5'}
+                />
+                <Button
+                    value={'save'}
+                    onClick={saveMarkers}
+                    className={'w-1/5'}
+                />
             </div>
             <div className='flex-1 flex items-center justify-center'>
                 <label htmlFor='name' className='text-black mr-4'>

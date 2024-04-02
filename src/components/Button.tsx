@@ -1,18 +1,27 @@
+import Image from 'next/image';
+
 interface Props {
-    value: string;
-    onClick: () => void;
+    value?: string;
+    onClick?: () => void;
+    className?: string;
+    image?: string;
 }
 
-const Button = ({ value, onClick }: Props) => {
+const Button = ({ value, onClick, className, image }: Props) => {
     // Set to uppercase to ensure normalization across all buttons
-    const uppercase = value.toUpperCase();
+    const uppercase = value?.toUpperCase();
 
     return (
         <button
-            className='text-gold-2 text-body-bold bg-maroon-2 p2 w-1/5 border-2 border-black border-solid rounded-md tracking-widest'
-            onClick={() => onClick()}
+            className={`text-gold-2 lg:text-body-bold text-small-semibold bg-maroon-2 p2 border-2 border-black border-solid rounded-md lg:tracking-widest ${
+                className ? `${className}` : ''
+            }`}
+            onClick={() => onClick && onClick()}
         >
-            {uppercase}
+            {image && (
+                <Image alt='icon' src={`${image}`} width={20} height={20} />
+            )}
+            {uppercase && uppercase}
         </button>
     );
 };

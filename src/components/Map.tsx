@@ -83,7 +83,7 @@ export default function Map() {
         });
     };
 
-    const saveMarkers = (currentMarkers: [] | mapboxgl.Marker[]) => {
+    const saveMarkers = () => {
         if (polygonName !== '') {
             setSavedPolygons([
                 ...savedPolygons,
@@ -94,6 +94,7 @@ export default function Map() {
             ]);
             // Clear markers after they are saved
             clearMarkers();
+            setPolygonName('');
         } else {
         }
     };
@@ -186,8 +187,10 @@ export default function Map() {
                         <BottomBar
                             clearMarkers={clearMarkers}
                             undoMarkers={undoMarkers}
+                            saveMarkers={saveMarkers}
                             setPolygonName={setPolygonName}
                             polygonName={polygonName}
+                            savedPolygons={savedPolygons}
                         />
                     </div>
                 </section>
