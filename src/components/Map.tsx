@@ -15,6 +15,9 @@ interface Polygon {
 }
 
 export default function Map() {
+    if (!process.env.NEXT_PUBLIC_ACCESS_TOKEN)
+        throw new Error('Mapbox access token is not defined');
+
     mapboxgl.accessToken = process.env.NEXT_PUBLIC_ACCESS_TOKEN;
 
     // Using type any here since the standard <HTMLDivElement> didn't work; map-gl may have unique types?
@@ -158,7 +161,7 @@ export default function Map() {
                 setZoom(map.current.getZoom().toFixed(2));
             });
         }
-    }, [lng, lat]);
+    }, [lng, lat, zoom]);
 
     useEffect(() => {
         const handleMarkerDrag = () => {
@@ -181,7 +184,7 @@ export default function Map() {
                 });
             }
         };
-    }, [markers]);
+    }, [markers, updatePolygon]);
 
     return (
         <>
