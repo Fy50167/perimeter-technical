@@ -32,16 +32,17 @@ export default function Map() {
 
     // Function to generate a polygon in-between markers assuming that we have at least 3
     const updatePolygon = () => {
+        // Always remove our current polygon before generating a new one
         if (map.current?.getSource('polygon')) {
             map.current.removeLayer('polygon');
             map.current.removeSource('polygon');
         }
+
+        // Only generate a polygon if there are at least 3 markers
         if (markers.length >= 3) {
             const coordinates = markers.map((marker) =>
                 marker.getLngLat().toArray()
             );
-
-            // We have to delete the current polygon, either whenever we generate a new one or clear markers
 
             map.current.addLayer({
                 id: 'polygon',
@@ -173,6 +174,7 @@ export default function Map() {
         // Handle polygon updates whenever new marker is added
         updatePolygon();
 
+        // Remove event listeners if component is unmounted; not really applicable here but best practice
         return () => {
             if (map.current) {
                 markers.forEach((marker) => {
