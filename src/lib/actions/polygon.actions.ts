@@ -8,41 +8,59 @@ export async function createPolygon(
     name: string,
     coordinates: Array<mapboxgl.Marker>
 ) {
-    
+    connectToDB();
     try {
-        connectToDB();
         const newPolygon = new Polygon({
             name: name,
-            coordinates: coordinates
+            coordinates: coordinates,
         });
         await newPolygon.save(); // Save the newly created polygon document to the database
         console.log('Polygon created successfully');
-    } catch (error: any) {
+    } catch (error) {
         console.error('Error creating polygon', error);
         throw error;
     }
 }
 
+// Get all polygons
+export async function fetchPolygons() {
+    connectToDB();
+    try {
+        const savedPolygons = await Polygon.find();
+        return savedPolygons;
+    } catch (error) {
+        console.error('Error fetching polygons', error);
+        throw error;
+    }
+}
+
 // Get a single polygon
-export async function getPolygon(
-    id: string
-) {
-    
-    try{
-        connectToDB();
-    } catch (error: any) {
+export async function getPolygon(name: string) {
+    connectToDB();
+    try {
+        const polygon = await Polygon.findOne({ name: name });
+        return polygon;
+    } catch (error) {
         console.error('Error fetching polygon', error);
         throw error;
     }
 }
 
-
-export async function updatePolygon(): Promise<void> {
+// Update one polygon
+export async function updatePolygon(
+    name: string,
+    coordinates: Array<mapboxgl.Marker>
+) {
     connectToDB();
 
     try {
-        await Polygon.findOneAndUpdate({
-
-        })
+        const updatedPolygon = await Polygon.findOneAndUpdate(
+            { name: name },
+            { name, coordinates }
+        );
+        return updatedPolygon;
+    } catch (error) {
+        console.error('Error updating polygon', error);
+        throw error;
     }
 }
