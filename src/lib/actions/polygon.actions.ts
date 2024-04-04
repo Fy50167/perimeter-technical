@@ -27,6 +27,7 @@ export async function fetchPolygons() {
         const response = await Polygon.find();
         const savedPolygons = JSON.parse(JSON.stringify(response));
 
+        console.log('Polygon fetched!');
         return savedPolygons;
     } catch (error) {
         console.error('Error fetching polygons', error);
@@ -40,6 +41,7 @@ export async function getPolygon(name: string) {
     try {
         const response = await Polygon.findOne({ name: name });
         const polygon = JSON.parse(JSON.stringify(response));
+        console.log('Polygons fetched!');
         return polygon;
     } catch (error) {
         console.error('Error fetching polygon', error);
@@ -59,9 +61,21 @@ export async function updatePolygon(
             { name: name },
             { name, coordinates }
         );
+        console.log('Polygon updated!');
         return updatedPolygon;
     } catch (error) {
         console.error('Error updating polygon', error);
+        throw error;
+    }
+}
+
+export async function deletePolygon(name: string) {
+    connectToDB();
+    try {
+        const deletedPolygon = await Polygon.findOneAndDelete({ name: name });
+        console.log('Polygon deleted!');
+    } catch (error) {
+        console.error('Error deleting polygon', error);
         throw error;
     }
 }

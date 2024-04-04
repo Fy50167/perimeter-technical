@@ -6,7 +6,7 @@ import Marker from './Marker';
 import mapboxgl from 'mapbox-gl';
 import { useState } from 'react';
 import Image from 'next/image';
-import { getPolygon } from '@/lib/actions/polygon.actions';
+import { deletePolygon, getPolygon } from '@/lib/actions/polygon.actions';
 
 interface Polygon {
     name: string;
@@ -63,14 +63,11 @@ const Sidebar = ({
     };
 
     // Delete polygons by filtering out the polygons that has the same name
-    const deletePolygon = (name: string) => {
+    const deleteSelected = async (name: string) => {
+        await deletePolygon(name);
         setSavedPolygons(
             savedPolygons.filter((polygon) => polygon.name !== name)
         );
-    };
-
-    const logPolygons = () => {
-        console.log(savedPolygons);
     };
 
     return (
@@ -117,7 +114,7 @@ const Sidebar = ({
                                 />
                                 <Button
                                     image={'/assets/trash.png'}
-                                    onClick={() => deletePolygon(polygon.name)}
+                                    onClick={() => deleteSelected(polygon.name)}
                                 />
                             </div>
                         </div>
