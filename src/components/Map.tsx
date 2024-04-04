@@ -12,7 +12,7 @@ import { createPolygon, fetchPolygons } from '@/lib/actions/polygon.actions';
 
 interface Polygon {
     name: string;
-    coordinates: Array<mapboxgl.Marker>;
+    coordinates: number[][];
 }
 
 export default function Map() {
@@ -134,6 +134,7 @@ export default function Map() {
         };
 
         fetchAndSetPolygons();
+        console.log(savedPolygons);
 
         // Ask for user location for default map position
         navigator.geolocation.getCurrentPosition(

@@ -24,7 +24,9 @@ export async function createPolygon(name: string, markers: number[][]) {
 export async function fetchPolygons() {
     connectToDB();
     try {
-        const savedPolygons = await Polygon.find();
+        const response = await Polygon.find();
+        const savedPolygons = JSON.parse(JSON.stringify(response));
+
         return savedPolygons;
     } catch (error) {
         console.error('Error fetching polygons', error);
@@ -36,7 +38,8 @@ export async function fetchPolygons() {
 export async function getPolygon(name: string) {
     connectToDB();
     try {
-        const polygon = await Polygon.findOne({ name: name });
+        const response = await Polygon.findOne({ name: name });
+        const polygon = JSON.parse(JSON.stringify(response));
         return polygon;
     } catch (error) {
         console.error('Error fetching polygon', error);

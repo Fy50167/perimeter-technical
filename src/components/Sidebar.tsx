@@ -6,10 +6,11 @@ import Marker from './Marker';
 import mapboxgl from 'mapbox-gl';
 import { useState } from 'react';
 import Image from 'next/image';
+import { getPolygon } from '@/lib/actions/polygon.actions';
 
 interface Polygon {
     name: string;
-    coordinates: Array<mapboxgl.Marker>;
+    coordinates: number[][];
 }
 
 interface Props {
@@ -35,18 +36,16 @@ const Sidebar = ({
         setExpanded(!expanded);
     };
     // Select a previously saved polygon
-    const selectPolygon = (name: string) => {
+    const selectPolygon = async (name: string) => {
         if (markers) markers.forEach((marker) => marker.remove());
         setPolygonName(name);
-        const selected = savedPolygons.find(
-            (polygon) => polygon.name === name
-        )!;
+        const polygon = await getPolygon(name);
 
         // Create an array to hold the new markers
         const newMarkers: mapboxgl.Marker[] = [];
 
         // Add markers in bulk
-        for (let i = 0; i < selected.coordinates.length; i++) {
+        for (let i = 0; i < polygon.coordinates.length; i++) {
             const markerElement = document.createElement('div');
             createRoot(markerElement).render(<Marker />);
             const newMarker = new mapboxgl.Marker({
@@ -54,7 +53,7 @@ const Sidebar = ({
                 anchor: 'bottom',
                 element: markerElement,
             });
-            const lngLat = selected.coordinates[i].getLngLat();
+            const lngLat = polygon.coordinates[i];
             newMarker.setLngLat(lngLat).addTo(map);
             newMarkers.push(newMarker);
         }
@@ -68,6 +67,10 @@ const Sidebar = ({
         setSavedPolygons(
             savedPolygons.filter((polygon) => polygon.name !== name)
         );
+    };
+
+    const logPolygons = () => {
+        console.log(savedPolygons);
     };
 
     return (
