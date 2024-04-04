@@ -4,20 +4,18 @@ import Polygon from '../models/polygon.model';
 import { connectToDB } from '../mongoose';
 
 // Generate a new polygon on save
-export async function createPolygon(
-    name: string,
-    coordinates: Array<mapboxgl.Marker>
-) {
-    connectToDB();
+export async function createPolygon(name: string, markers: number[][]) {
     try {
-        const newPolygon = new Polygon({
+        connectToDB();
+        const newPolygon = await Polygon.create({
             name: name,
-            coordinates: coordinates,
+            coordinates: markers,
         });
         await newPolygon.save(); // Save the newly created polygon document to the database
+
         console.log('Polygon created successfully');
     } catch (error) {
-        console.error('Error creating polygon', error);
+        console.error('Error fetching polygons', error);
         throw error;
     }
 }

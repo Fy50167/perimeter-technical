@@ -8,6 +8,7 @@ import { createRoot } from 'react-dom/client';
 import Location from './Location';
 import BottomBar from './BottomBar';
 import Sidebar from './Sidebar';
+import { createPolygon, fetchPolygons } from '@/lib/actions/polygon.actions';
 
 interface Polygon {
     name: string;
@@ -29,6 +30,7 @@ export default function Map() {
     const [lat, setLat] = useState<number | null>(null);
     const [zoom, setZoom] = useState<number>(12);
     const [markers, setMarkers] = useState<[] | mapboxgl.Marker[]>([]);
+    const [coordinates, setCoordinates] = useState<number[][]>([]);
     const [savedPolygons, setSavedPolygons] = useState<[] | Polygon[]>([]);
     const [polygonName, setPolygonName] = useState<string>('');
 
@@ -87,29 +89,16 @@ export default function Map() {
     };
 
     // Function to replace and save markers to saved polygons
-    const saveMarkers = (name: string) => {
-        const index = savedPolygons.findIndex(
-            (polygon) => polygon.name === name
-        );
+    const saveMarkers = async (name: string) => {
+        await createPolygon(name, coordinates);
 
-        // If index is not found then findIndex returns -1
-        if (index !== -1) {
-            const updatedPolygons = [...savedPolygons];
-            updatedPolygons[index] = {
+        setSavedPolygons([
+            ...savedPolygons,
+            {
                 name: name,
                 coordinates: markers,
-            };
-            setSavedPolygons(updatedPolygons);
-        } else {
-            // If the polygon with the given name doesn't exist, add it to savedPolygons
-            setSavedPolygons([
-                ...savedPolygons,
-                {
-                    name: name,
-                    coordinates: markers,
-                },
-            ]);
-        }
+            },
+        ]);
 
         clearMarkers();
         setPolygonName('');
@@ -130,10 +119,23 @@ export default function Map() {
             ...prevMarkers,
             newMarker,
         ]);
+        setCoordinates((prevCoordinates: number[][]) => [
+            ...prevCoordinates,
+            [evt.lngLat.lng, evt.lngLat.lat],
+        ]);
     };
 
     // On initial load, fetch user's current position using browser's geolocation API and set default longitutde and latitude
     useEffect(() => {
+        // Fetch all polygons on initial load
+        const fetchAndSetPolygons = async () => {
+            const polygons = await fetchPolygons();
+            setSavedPolygons(polygons);
+        };
+
+        fetchAndSetPolygons();
+
+        // Ask for user location for default map position
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 const { longitude, latitude } = position.coords;
