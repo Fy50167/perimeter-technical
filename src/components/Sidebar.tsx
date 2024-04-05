@@ -17,6 +17,7 @@ interface Props {
     map: any;
     markers: [] | mapboxgl.Marker[];
     setMarkers: React.Dispatch<React.SetStateAction<mapboxgl.Marker[]>>;
+    setCoordinates: React.Dispatch<React.SetStateAction<number[][]>>;
     savedPolygons: Polygon[] | [];
     setSavedPolygons: React.Dispatch<React.SetStateAction<Polygon[]>>;
     setPolygonName: React.Dispatch<React.SetStateAction<string>>;
@@ -26,6 +27,7 @@ const Sidebar = ({
     map,
     markers,
     setMarkers,
+    setCoordinates,
     savedPolygons,
     setSavedPolygons,
     setPolygonName,
@@ -60,6 +62,7 @@ const Sidebar = ({
 
         // Update the markers state with the new markers
         setMarkers(newMarkers);
+        setCoordinates(polygon.coordinates);
     };
 
     // Delete polygons by filtering out the polygons that has the same name

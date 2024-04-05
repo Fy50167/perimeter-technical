@@ -26,7 +26,7 @@ const BottomBar = ({
     };
 
     // Conditions to check that we have a name and we have at least 3 points to generate a polygon
-    const saveHandler = () => {
+    const saveHandler = async () => {
         if (!polygonName) {
             Swal.fire({
                 title: 'Save failed.',

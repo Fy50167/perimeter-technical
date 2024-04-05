@@ -8,7 +8,12 @@ import { createRoot } from 'react-dom/client';
 import Location from './Location';
 import BottomBar from './BottomBar';
 import Sidebar from './Sidebar';
-import { createPolygon, fetchPolygons } from '@/lib/actions/polygon.actions';
+import {
+    createPolygon,
+    fetchPolygons,
+    getPolygon,
+    updateSavedPolygon,
+} from '@/lib/actions/polygon.actions';
 
 interface Polygon {
     name: string;
@@ -43,11 +48,7 @@ export default function Map() {
         }
 
         // Only generate a polygon if there are at least 3 markers
-        if (markers.length >= 3) {
-            const coordinates = markers.map((marker) =>
-                marker.getLngLat().toArray()
-            );
-
+        if (coordinates.length >= 3) {
             map.current.addLayer({
                 id: 'polygon',
                 type: 'fill',
@@ -74,6 +75,7 @@ export default function Map() {
     const clearMarkers = () => {
         markers.forEach((marker) => marker.remove());
         setMarkers([]);
+        setCoordinates([]);
     };
 
     const undoMarkers = () => {
@@ -90,15 +92,21 @@ export default function Map() {
 
     // Function to replace and save markers to saved polygons
     const saveMarkers = async (name: string) => {
-        await createPolygon(name, coordinates);
+        const polygon = await getPolygon(name);
 
-        setSavedPolygons([
-            ...savedPolygons,
-            {
-                name: name,
-                coordinates: markers,
-            },
-        ]);
+        if (polygon) {
+            await updateSavedPolygon(name, coordinates);
+        } else {
+            await createPolygon(name, coordinates);
+
+            setSavedPolygons([
+                ...savedPolygons,
+                {
+                    name: name,
+                    coordinates: coordinates,
+                },
+            ]);
+        }
 
         clearMarkers();
         setPolygonName('');
@@ -194,7 +202,7 @@ export default function Map() {
                 });
             }
         };
-    }, [markers, updatePolygon]);
+    }, [markers, coordinates, updatePolygon]);
 
     return (
         <>
@@ -202,10 +210,11 @@ export default function Map() {
                 <section className='md:min-w-[48rem] w-[90%] md:w-4/5 min-h-[45rem] h-[45rem] p-4 bg-slate-200 rounded-md flex flex-col md:flex-row justify-evenly gap-4'>
                     <Sidebar
                         map={map.current}
-                        savedPolygons={savedPolygons}
                         markers={markers}
-                        setSavedPolygons={setSavedPolygons}
                         setMarkers={setMarkers}
+                        setCoordinates={setCoordinates}
+                        savedPolygons={savedPolygons}
+                        setSavedPolygons={setSavedPolygons}
                         setPolygonName={setPolygonName}
                     />
                     <div className='h-full w-full md:w-4/5 border-2 border-black border-solid rounded-md overflow-hidden z-0 flex flex-col items-center justify-center'>

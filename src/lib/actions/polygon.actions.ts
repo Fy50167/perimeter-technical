@@ -40,6 +40,10 @@ export async function getPolygon(name: string) {
     connectToDB();
     try {
         const response = await Polygon.findOne({ name: name });
+        if (!response) {
+            console.log('No corresponding polygon found.');
+            return null;
+        }
         const polygon = JSON.parse(JSON.stringify(response));
         console.log('Polygons fetched!');
         return polygon;
@@ -50,9 +54,9 @@ export async function getPolygon(name: string) {
 }
 
 // Update one polygon
-export async function updatePolygon(
+export async function updateSavedPolygon(
     name: string,
-    coordinates: Array<mapboxgl.Marker>
+    coordinates: number[][]
 ) {
     connectToDB();
 
