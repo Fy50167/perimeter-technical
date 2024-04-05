@@ -72,10 +72,6 @@ const BottomBar = ({
                     Name:{' '}
                 </label>
                 <div className='w-3/4 p-2 flex flex-col gap-1'>
-                    <p className='text-black text-tiny-medium'>
-                        Note: Using an existing name will overwrite the existing
-                        polygon!
-                    </p>
                     <input
                         type='text'
                         name='name'

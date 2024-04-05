@@ -4,7 +4,13 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 A repository showcasing a basic MapGL map with polygon functionality for the Perimeter Technical Exercise. The final product should utilize MapGL to allow for map movement and robust polygon creation with interactive points.
 
+## Screenshot
+
+![Site screenshot](/public/assets/screenshot.jpeg)
+
 ## Usage
+
+Deployed application can be found at the following link: [Website link](https://perimeter-technical.vercel.app)
 
 Repository can be installed by running the following commands:
 
