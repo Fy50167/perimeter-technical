@@ -9,6 +9,17 @@
     color: white;
 }
 
+li::before {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-image: url('/assets/globe.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: 0.5rem;
+}
+
 .mobile-line-break {
     display: none;
 }
