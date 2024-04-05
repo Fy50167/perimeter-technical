@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
+import { instructions } from '@/constants';
 
 const Instructions = () => {
     return (
@@ -7,11 +8,20 @@ const Instructions = () => {
             <div className='relative'>
                 <div className='bg-slate-500 rounded-md border-black border-2 border-solid p-2 flex flex-col'>
                     <h2 className='text-small-semibold'>How to use:</h2>
-                    <ul className='text-small-regular list-[circle]'>
-                        <li style={{ listStyleType: 'none' }}>
-                            To make markers on the map, simply click/tap. All
-                            markers are draggable.
-                        </li>
+
+                    <ul className='text-small-regular'>
+                        {instructions.map((instruction, index) => (
+                            <li
+                                key={index}
+                                className={`${
+                                    index !== instructions.length - 1
+                                        ? 'mb-2'
+                                        : ''
+                                }`}
+                            >
+                                {instruction}
+                            </li>
+                        ))}
                     </ul>
                 </div>
                 <div className='absolute right-0 top-0 w-4 h-4 transform rotate-45 -mt-1 mr-1'>
