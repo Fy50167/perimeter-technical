@@ -15,6 +15,7 @@ import {
     updateSavedPolygon,
 } from '@/lib/actions/polygon.actions';
 import Swal from 'sweetalert2';
+import { ThreeCircles } from 'react-loader-spinner';
 
 interface Polygon {
     name: string;
@@ -42,7 +43,7 @@ export default function Map() {
     const [coordinates, setCoordinates] = useState<number[][]>([]);
     const [savedPolygons, setSavedPolygons] = useState<[] | Polygon[]>([]);
     const [polygonName, setPolygonName] = useState<string>('');
-    const [loading, setLoading] = useState(true);
+    const [loadingPolygons, setLoadingPolygons] = useState(true);
 
     // Function to generate a polygon in-between markers assuming that we have at least 3
     const updatePolygon = () => {
@@ -159,7 +160,7 @@ export default function Map() {
         const fetchAndSetPolygons = async () => {
             try {
                 // Set loading to true before fetching
-                setLoading(true);
+                setLoadingPolygons(true);
 
                 const polygons = await fetchPolygons();
                 setSavedPolygons(polygons);
@@ -167,7 +168,7 @@ export default function Map() {
                 console.error('Error fetching polygons', error);
             } finally {
                 // Set loading to false after fetching is complete
-                setLoading(false);
+                setLoadingPolygons(false);
             }
         };
 
@@ -251,7 +252,7 @@ export default function Map() {
                         savedPolygons={savedPolygons}
                         setSavedPolygons={setSavedPolygons}
                         setPolygonName={setPolygonName}
-                        loading={loading}
+                        loading={loadingPolygons}
                     />
                     <div className='h-full w-full md:w-4/5 border-2 border-black border-solid rounded-md overflow-hidden z-0 flex flex-col items-center justify-center'>
                         <div className='w-full h-[92%] border-black border-b-2 border-solid relative'>
@@ -272,9 +273,17 @@ export default function Map() {
                     </div>
                 </section>
             ) : (
-                <p className='mt-5 text-heading2-semibold text-center'>
-                    Obtaining current location...
-                </p>
+                <div className='mt-5 text-center flex justify-center items-center gap-4'>
+                    <span className='text-heading2-semibold'>
+                        Obtaining current location...
+                    </span>
+                    <ThreeCircles
+                        height='40'
+                        width='40'
+                        color='white'
+                        ariaLabel='loading'
+                    />
+                </div>
             )}
         </>
     );
