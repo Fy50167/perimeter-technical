@@ -45,7 +45,7 @@ export async function getPolygon(name: string) {
             return null;
         }
         const polygon = JSON.parse(JSON.stringify(response));
-        console.log('Polygons fetched!');
+        console.log('Polygon fetched!');
         return polygon;
     } catch (error) {
         console.error('Error fetching polygon', error);
@@ -65,8 +65,7 @@ export async function updateSavedPolygon(
             { name: name },
             { name, coordinates }
         );
-        console.log('Polygon updated!');
-        return updatedPolygon;
+        console.log('Polygons updated!');
     } catch (error) {
         console.error('Error updating polygon', error);
         throw error;

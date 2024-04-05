@@ -49,7 +49,10 @@ export default function Map() {
         }
 
         // Only generate a polygon if there are at least 3 markers
-        if (coordinates.length >= 3) {
+        if (markers.length >= 3) {
+            const coordinates = markers.map((marker) =>
+                marker.getLngLat().toArray()
+            );
             map.current.addLayer({
                 id: 'polygon',
                 type: 'fill',
@@ -196,6 +199,11 @@ export default function Map() {
 
     useEffect(() => {
         const handleMarkerDrag = () => {
+            // Whenever a marker is dragged, we need to update the coordinates state array as well
+            const coordinates = markers.map((marker) =>
+                marker.getLngLat().toArray()
+            );
+            setCoordinates(coordinates);
             updatePolygon();
         };
 
