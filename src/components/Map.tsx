@@ -14,6 +14,7 @@ import {
     getPolygon,
     updateSavedPolygon,
 } from '@/lib/actions/polygon.actions';
+import Swal from 'sweetalert2';
 
 interface Polygon {
     name: string;
@@ -96,8 +97,20 @@ export default function Map() {
 
         if (polygon) {
             await updateSavedPolygon(name, coordinates);
+            Swal.fire({
+                title: 'Success.',
+                text: 'Your polygon has been updated.',
+                icon: 'success',
+                confirmButtonText: 'Confirm',
+            });
         } else {
             await createPolygon(name, coordinates);
+            Swal.fire({
+                title: 'Success.',
+                text: 'Your polygon has been created.',
+                icon: 'success',
+                confirmButtonText: 'Confirm',
+            });
 
             setSavedPolygons([
                 ...savedPolygons,

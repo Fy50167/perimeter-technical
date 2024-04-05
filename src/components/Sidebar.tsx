@@ -7,6 +7,7 @@ import mapboxgl from 'mapbox-gl';
 import { useState } from 'react';
 import Image from 'next/image';
 import { deletePolygon, getPolygon } from '@/lib/actions/polygon.actions';
+import Swal from 'sweetalert2';
 
 interface Polygon {
     name: string;
@@ -71,6 +72,12 @@ const Sidebar = ({
         setSavedPolygons(
             savedPolygons.filter((polygon) => polygon.name !== name)
         );
+        Swal.fire({
+            title: 'Success.',
+            text: 'Your polygon has been deleted.',
+            icon: 'success',
+            confirmButtonText: 'Confirm',
+        });
     };
 
     return (
