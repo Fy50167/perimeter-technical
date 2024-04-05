@@ -8,6 +8,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { deletePolygon, getPolygon } from '@/lib/actions/polygon.actions';
 import Swal from 'sweetalert2';
+import { ThreeCircles } from 'react-loader-spinner';
 
 interface Polygon {
     name: string;
@@ -22,6 +23,7 @@ interface Props {
     savedPolygons: Polygon[] | [];
     setSavedPolygons: React.Dispatch<React.SetStateAction<Polygon[]>>;
     setPolygonName: React.Dispatch<React.SetStateAction<string>>;
+    loading: boolean;
 }
 
 const Sidebar = ({
@@ -32,12 +34,14 @@ const Sidebar = ({
     savedPolygons,
     setSavedPolygons,
     setPolygonName,
+    loading,
 }: Props) => {
     const [expanded, setExpanded] = useState(false);
 
     const handleExpand = () => {
         setExpanded(!expanded);
     };
+
     // Select a previously saved polygon
     const selectPolygon = async (name: string) => {
         if (markers) markers.forEach((marker) => marker.remove());
@@ -104,7 +108,19 @@ const Sidebar = ({
                     expanded ? 'block' : 'hidden'
                 }`}
             >
-                {savedPolygons.length === 0 ? (
+                {loading ? (
+                    <h3 className='h-auto w-full flex flex-wrap justify-center p-1'>
+                        <span className='mr-4 text-black text-small-semibold'>
+                            Loading...
+                        </span>
+                        <ThreeCircles
+                            height='20'
+                            width='20'
+                            color='black'
+                            ariaLabel='loading'
+                        />
+                    </h3>
+                ) : savedPolygons.length === 0 ? (
                     <h3 className='text-black h-auto text-small-semibold w-full flex flex-wrap p-1'>
                         No saved polygons yet...
                     </h3>

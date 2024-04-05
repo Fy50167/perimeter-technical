@@ -31,14 +31,18 @@ export default function Map() {
     const mapContainer = useRef<any>(null);
     const map = useRef<any>(null);
 
-    // Contain current longitude and latitude
+    // Contain current longitude and latitude, and zoom for display on map
     const [lng, setLng] = useState<number | null>(null);
     const [lat, setLat] = useState<number | null>(null);
     const [zoom, setZoom] = useState<number>(12);
+    /*   Two separate arrays, one contains the markers themselves and one contains only the coordinates. Separated into 
+    two state arrays since back-end can't interact with mapboxgl.Marker data type but an array of them is still needed
+    for marker specific methods like .remove and dragend event listeners */
     const [markers, setMarkers] = useState<[] | mapboxgl.Marker[]>([]);
     const [coordinates, setCoordinates] = useState<number[][]>([]);
     const [savedPolygons, setSavedPolygons] = useState<[] | Polygon[]>([]);
     const [polygonName, setPolygonName] = useState<string>('');
+    const [loading, setLoading] = useState(true);
 
     // Function to generate a polygon in-between markers assuming that we have at least 3
     const updatePolygon = () => {
@@ -153,8 +157,18 @@ export default function Map() {
     useEffect(() => {
         // Fetch all polygons on initial load
         const fetchAndSetPolygons = async () => {
-            const polygons = await fetchPolygons();
-            setSavedPolygons(polygons);
+            try {
+                // Set loading to true before fetching
+                setLoading(true);
+
+                const polygons = await fetchPolygons();
+                setSavedPolygons(polygons);
+            } catch (error) {
+                console.error('Error fetching polygons', error);
+            } finally {
+                // Set loading to false after fetching is complete
+                setLoading(false);
+            }
         };
 
         fetchAndSetPolygons();
@@ -237,6 +251,7 @@ export default function Map() {
                         savedPolygons={savedPolygons}
                         setSavedPolygons={setSavedPolygons}
                         setPolygonName={setPolygonName}
+                        loading={loading}
                     />
                     <div className='h-full w-full md:w-4/5 border-2 border-black border-solid rounded-md overflow-hidden z-0 flex flex-col items-center justify-center'>
                         <div className='w-full h-[92%] border-black border-b-2 border-solid relative'>

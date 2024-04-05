@@ -27,7 +27,7 @@ export async function fetchPolygons() {
         const response = await Polygon.find();
         const savedPolygons = JSON.parse(JSON.stringify(response));
 
-        console.log('Polygon fetched!');
+        console.log('Polygons fetched!');
         return savedPolygons;
     } catch (error) {
         console.error('Error fetching polygons', error);
@@ -65,7 +65,7 @@ export async function updateSavedPolygon(
             { name: name },
             { name, coordinates }
         );
-        console.log('Polygons updated!');
+        console.log('Polygon updated!');
     } catch (error) {
         console.error('Error updating polygon', error);
         throw error;
