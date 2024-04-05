@@ -97,6 +97,11 @@ export default function Map() {
             newMarkers.pop();
             return newMarkers;
         });
+        setCoordinates((prevCoordinates) => {
+            const newCoordinates = [...prevCoordinates];
+            newCoordinates.pop();
+            return newCoordinates;
+        });
     };
 
     // Function to replace and save markers to saved polygons
