@@ -25,7 +25,7 @@ export default function Home() {
                     </div>
                 </div>
                 <h1 className='md:text-heading1-bold text-body-bold w-full'>
-                    Perimeter Technical Exercise
+                    Interactive Map
                 </h1>
                 <h3 className='text-small-medium md:text-base-medium'>
                     By: Francis Yang
